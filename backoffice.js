@@ -4,7 +4,7 @@ let idProduct = param.get("id");
 const containerCards = document.getElementById('containerCards');
 const form = document.getElementById("product-form");
 
-const url = 'https://www.google.com/url?q=https://striveschool-api.herokuapp.com/api/product/';
+const url = 'https://striveschool-api.herokuapp.com/api/product/';
 const apiKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjNhMTI5MjBiM2IyNTAwMTUxYjU0MmEiLCJpYXQiOjE3MTUwODE4NzQsImV4cCI6MTcxNjI5MTQ3NH0.oP8Ej3O1hpVz1etqFQzMYlKihyM4c_VL5E6hCYdAYAI';
 
 
@@ -76,7 +76,7 @@ function creaElementoConTesto(tipoDiTag, testo) {
 }
 function creaElementoConImg(tipoDiTag, testo) {
   const tag = document.createElement(tipoDiTag);
-  tag.textContent = testo;
+  tag.src = testo;
   return tag;
 }
 
