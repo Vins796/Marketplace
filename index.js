@@ -1,20 +1,17 @@
 // Puntatori
 const url = 'https://striveschool-api.herokuapp.com/api/product/';
-const apiKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjNhMTI5MjBiM2IyNTAwMTUxYjU0MmEiLCJpYXQiOjE3MTUwODE4NzQsImV4cCI6MTcxNjI5MTQ3NH0.oP8Ej3O1hpVz1etqFQzMYlKihyM4c_VL5E6hCYdAYAI';
-
+const apiKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjNiYTQwNWIxYzc3ZjAwMTUwNjgzZWMiLCJpYXQiOjE3MTUxODQ2NDUsImV4cCI6MTcxNjM5NDI0NX0.sXShtyZXMpQO7jCPkI6kklxE5ib3BiXQL-QAMCfIgmU';
 
 // Funzione per ottenere prodotti
-function obtainProducts() {
-    fetch(url, {
-        headers: {
-            Authorization: `Bearer ${apiKey}`
-        }
-    })
-      .then((response) => response.json())
-      .then((products) => {
-        // Itero attraverso la lista di prodotti
-        products.forEach((product) => creaProdotto(product));
-      })
-      // Gestisco l'errore
-      .catch((error) => console.error("Errore:", error));
+async function fetchItems() {
+
+    const response = await fetch(url,{ 
+    headers: {
+        Authorization: `Bearer ${apiKey}`
+    } 
+    });
+
+    const products = await response.json(); // Converte la risposta in JSON
+    console.log(products);
+    return products; // Restituisce l'elenco dei prodotti
 }

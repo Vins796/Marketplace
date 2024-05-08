@@ -48,6 +48,7 @@
       <!-- Creazione prodotto -->
       <div id="create" class="mt-3">
         <h3 class="mb-5">Aggiungi un Prodotto</h3>
+        
         <!-- Form aggiunta prodotto -->
         <form id="product-form">
           
@@ -59,7 +60,7 @@
               <input type="text" id="description" class="mt-1 mb-3 p-2 form-control" required />
 
               <label for="image" class="text-start">Image:</label>
-              <input type="text" id="image" class="mt-1 mb-3 p-2 rounded form-control" required />
+              <input type="url" id="image" class="mt-1 mb-3 p-2 rounded form-control" required />
 
               <div class="d-flex gap-4">
                 <div class="d-flex flex-column">
@@ -81,9 +82,12 @@
               </div>
             
 
-            </div>           
+            </div>         
                  
         </form>
+        <div class="mt-5">
+          <div id="containerCards" class="row mb-5"></div>
+        </div>
       </div>
     </div>
 
