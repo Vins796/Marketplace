@@ -17,7 +17,7 @@ Questo progetto è un'applicazione web che permette di inserire in un database p
 
 ## Consegna esercizio 
 
-![Slide 1](ASSETS/Immagine2024-05-09201850.png)
+![App Screenshot](ASSETS/Immagine2024-05-09201850.png)
 ![Slide 2](ASSETS/Immagine2024-05-09201911.png)
 ![Slide 3](ASSETS/Immagine2024-05-09201933.png)
 ![Slide 4](ASSETS/Immagine2024-05-09201948.png)
