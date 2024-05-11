@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Creo il div della card del prodotto
         const card = document.createElement("div");
-        card.className = "product-card col flex-column me-4 text-center"; // Applico CSS
+        card.className = "product-card col me-4 text-center"; // Applico CSS
         
         // Creo gli elementi che popoleranno la card
         // IMAGE
@@ -45,6 +45,8 @@ document.addEventListener('DOMContentLoaded', () => {
         brand.className = 'me-3';
         const price = creaElementoConTesto("span", prod.price);
         // LINK al backoffice
+        const linkContainer = document.createElement('div');
+        linkContainer.className = 'd-flex gap-3';
         const link = document.createElement('a');
         link.className = "text-white d-block text-decoration-none btn btn-primary w-50 mx-auto mt-4";
         link.href = "backoffice.html"
@@ -53,6 +55,9 @@ document.addEventListener('DOMContentLoaded', () => {
         linkDetail.className = "text-white d-block text-decoration-none btn btn-warning w-50 mx-auto mt-4";
         linkDetail.href = "product-detail.html"
         linkDetail.textContent = 'Detail';
+
+        linkContainer.appendChild(link);
+        linkContainer.appendChild(linkDetail);
     
         // Aggiungo gli elementi creati alla card
         card.appendChild(image);
@@ -60,8 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
         card.appendChild(description);
         card.appendChild(brand);
         card.appendChild(price);
-        card.appendChild(link);        
-        card.appendChild(linkDetail);        
+        card.appendChild(linkContainer);              
         
         // Aggiungo la card al contenitore dei prodotti
         containerCards.appendChild(card);

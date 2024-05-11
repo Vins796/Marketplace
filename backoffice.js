@@ -58,15 +58,12 @@ document.addEventListener('DOMContentLoaded', function() {
   function showProduct(products) {
     containerCards.innerHTML = '';
     containerCards.className = 'mt-5 row row-gap-5';
-    console.log(products);
+
     products.forEach(prod => {
       
       // Creo il div della card del prodotto
       const card = document.createElement("div");
-      card.className = "product-card me-4"; // Applico CSS
-
-      // Imposto l'ID del prodotto come attributo data
-      card.setAttribute('data-product-id', prod._id);
+      card.className = "product-card col me-4"; // Applico CSS
     
       // Creo gli elementi che popoleranno la card
       const image = creaElementoConImg("img", prod.imageUrl);
@@ -79,19 +76,19 @@ document.addEventListener('DOMContentLoaded', function() {
       console.log(prod.id);
 
       // Creo e stilizzo il contenitore dei bottoni
-      const buttonContainer = document.createElement('div')
-      buttonContainer.className = 'd-flex gap-2'
+      const buttonContainer = document.createElement('div');
+      buttonContainer.className = 'button-container';
 
       // Creo e stilizzo il bottone Update
       const buttonUpdate = document.createElement('button');
       buttonUpdate.textContent = "Modifica";
-      buttonUpdate.className = 'btn btn-secondary w-50 mx-auto mt-5';
+      buttonUpdate.className = 'btn btn-secondary w-50';
       buttonUpdate.onclick = () => updateProduct(prod.id); // Aggiungo la funzione onclick al bottone
 
       // Creo e stilizzo il bottone Delete
       const buttonDelete = document.createElement('button');
       buttonDelete.textContent = "Delete";
-      buttonDelete.className = 'btn btn-danger w-50 mx-auto';
+      buttonDelete.className = 'btn btn-danger w-50';
       buttonDelete.onclick = () => deleteProduct(prod.id); // Aggiungo la funzione onclick al bottone
   
       // Aggiungo gli elementi creati alla card
@@ -108,15 +105,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
       card.appendChild(buttonContainer);
 
-      // Al click sulla card ci spostiamo nella pagina html specifica tramite l'ID
-      card.addEventListener('click', function() {
-        const productId = card.getAttribute('data-product-id');
-        window.location.href = `product-detail.html?id=${productId}`;
-      });     
+      this.onclick = () => {
+        window.location = `product-detail.html?_id=${prod._id}`
+    };
       
       // Aggiungo la card al contenitore dei prodotti
       containerCards.appendChild(card);
-
+      
     });
   }
   // Fine funzione per la creazione della struttura della card
@@ -201,67 +196,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
   }
   // Fine funzione per eliminare un prodotto
-
-  // Funzione per mostrare i prodotti
-  function showProduct(products) {
-    // Mi occupo della pulizia del contenitore
-    containerCards.innerHTML = '';
-    products.forEach(prod => {
-      
-      // Creazione della card del prodotto
-      const card = document.createElement("div");
-      card.className = "product-card col flex-column me-4"; // Applica CSS
-  
-      // Creazione degli elementi per la card
-      // IMMAGINE
-      const image = creaElementoConImg("img", prod.imageUrl); // Creo e richiamo delle funzioni per la creazione degli elementi per non utilizzare innerHTML
-      image.className = 'product-card-img';
-      
-      // NOME
-      const name = creaElementoConTesto("h3", prod.name); // Creo e richiamo delle funzioni per la creazione degli elementi per non utilizzare innerHTML
-
-      // DESCRIZIONE
-      const description = creaElementoConTesto("p", prod.description); // Creo e richiamo delle funzioni per la creazione degli elementi per non utilizzare innerHTML
-
-      // BRAND
-      const brand = creaElementoConTesto("span", prod.brand); // Creo e richiamo delle funzioni per la creazione degli elementi per non utilizzare innerHTML
-      brand.className = 'me-3';
-      const price = creaElementoConTesto("span", prod.price); // Creo e richiamo delle funzioni per la creazione degli elementi per non utilizzare innerHTML
-
-      // Creazione del container dei bottoni
-      const buttonContainer = document.createElement('div')
-      buttonContainer.className = 'd-flex gap-2 mt-3'
-
-      // Creo e stilizzo il bottone di UPDATE
-      const buttonUpdate = document.createElement('button');
-      buttonUpdate.textContent = "Modifica";
-      buttonUpdate.className = 'btn btn-secondary w-50 mx-auto';
-      buttonUpdate.onclick = () => updateProduct(prod._id); // Passa l'ID del prodotto
-
-      // Creo e stilizzo il bottone di DELETE
-      const buttonDelete = document.createElement('button');
-      buttonDelete.textContent = "Delete";
-      buttonDelete.className = 'btn btn-danger w-50 mx-auto';
-      buttonDelete.onclick = () => deleteProduct(prod._id); // Passa l'ID del prodotto
-
-      // Aggiunge gli elementi alla card
-      card.appendChild(image);
-      card.appendChild(name);
-      card.appendChild(description);
-      card.appendChild(brand);
-      card.appendChild(price);
-
-      // Aggiungo al container dei bottoni i bottoni creati
-      buttonContainer.appendChild(buttonUpdate);
-      buttonContainer.appendChild(buttonDelete);
-      card.appendChild(buttonContainer); // Appendo il contenitore dei bottoni alla card
-    
-      // Appendo la card al contenitore dei prodotti
-      containerCards.appendChild(card);
-    });
-  }
-  // Fine funzione per mostrare i prodotti
-
 
   // Creo la funzione al submit del form
   form.addEventListener('submit', async function(event) {
