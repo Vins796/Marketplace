@@ -19,7 +19,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     // Converto la risposta in un file JSON
     const product = await response.json();
-    console.log(product);
+    product.forEach(prod => {
+      console.log("ID del prodotto:", prod._id);
+    });
     showProduct(product);
   }
 
@@ -62,6 +64,9 @@ document.addEventListener('DOMContentLoaded', function() {
       // Creo il div della card del prodotto
       const card = document.createElement("div");
       card.className = "product-card me-4"; // Applico CSS
+
+      // Imposto l'ID del prodotto come attributo data
+      card.setAttribute('data-product-id', prod._id);
     
       // Creo gli elementi che popoleranno la card
       const image = creaElementoConImg("img", prod.imageUrl);
@@ -75,12 +80,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
       // Creo e stilizzo il contenitore dei bottoni
       const buttonContainer = document.createElement('div')
-      buttonContainer.className = 'd-flex gap-2 mt-3'
+      buttonContainer.className = 'd-flex gap-2'
 
       // Creo e stilizzo il bottone Update
       const buttonUpdate = document.createElement('button');
       buttonUpdate.textContent = "Modifica";
-      buttonUpdate.className = 'btn btn-secondary w-50 mx-auto';
+      buttonUpdate.className = 'btn btn-secondary w-50 mx-auto mt-5';
       buttonUpdate.onclick = () => updateProduct(prod.id); // Aggiungo la funzione onclick al bottone
 
       // Creo e stilizzo il bottone Delete
@@ -100,15 +105,18 @@ document.addEventListener('DOMContentLoaded', function() {
       buttonContainer.appendChild(buttonUpdate);
       buttonContainer.appendChild(buttonDelete);
 
-      // al click sulla card ci spostiamo nella pagina html specifica tramite il numero asin
-      card.onclick = () => (window.location = `product-detail.html?id=${prod._id}`);
 
       card.appendChild(buttonContainer);
 
+      // Al click sulla card ci spostiamo nella pagina html specifica tramite l'ID
+      card.addEventListener('click', function() {
+        const productId = card.getAttribute('data-product-id');
+        window.location.href = `product-detail.html?id=${productId}`;
+      });     
       
-    
       // Aggiungo la card al contenitore dei prodotti
       containerCards.appendChild(card);
+
     });
   }
   // Fine funzione per la creazione della struttura della card
@@ -118,6 +126,7 @@ document.addEventListener('DOMContentLoaded', function() {
   function creaElementoConTesto(tipoDiTag, testo) {
     const tag = document.createElement(tipoDiTag);
     tag.textContent = testo;
+    tag.className = 'mt-3';
     return tag;
   }
 
@@ -132,54 +141,64 @@ document.addEventListener('DOMContentLoaded', function() {
   // Funzione per aggiornare un prodotto
   // Passo come parametro l'ID per utilizzarlo in seguito
   const updateProduct = async (id) => {
-  // Recupera i valori inseriti dall'utente nel form
-  const name = document.getElementById('name').value;
-  const description = document.getElementById('description').value;
-  const brand = document.getElementById('brand').value;
-  const imageUrl = document.getElementById('image').value;
-  const price = document.getElementById('price').value;
-  // Crea un nuovo oggetto prodotto con i nuovi dati
-  const updatedProduct = {name, description, brand, imageUrl, price};
+    
+    // Recupera i valori inseriti dall'utente nel form
+    const name = document.getElementById('name').value;
+    const description = document.getElementById('description').value;
+    const brand = document.getElementById('brand').value;
+    const imageUrl = document.getElementById('image').value;
+    const price = document.getElementById('price').value;
+    // Crea un nuovo oggetto prodotto con i nuovi dati
+    const updatedProduct = {name, description, brand, imageUrl, price};
 
-  // Effettuo la chimata HTTP passando anche come paramtro l'ID
-  const res = await fetch(url + id, {
-      method: "PUT", // Utilizzo il metodo PUT per modificare l'elemento 
-      headers: { 
-        "content-type": "application/json",
-        'Authorization': `Bearer ${apiKey}`
-      },
-      body: JSON.stringify(updatedProduct),
-  });
+    // Effettuo la chimata HTTP passando anche come paramtro l'ID
+    const res = await fetch(url + id, {
+        method: "PUT", // Utilizzo il metodo PUT per modificare l'elemento 
+        headers: { 
+          "content-type": "application/json",
+          'Authorization': `Bearer ${apiKey}`
+        },
+        body: JSON.stringify(updatedProduct),
+    });
 
-  // Se la richiesta ha avuto successo
-  if (res.ok) {
-      // Mostra un messaggio di conferma
-      alert('Prodotto aggiornato con successo!');
-      // Chiama la funzione ottieniProdotti per aggiornare la lista dei prodotti
-      await ottieniProdotti();
-  }
-  }
+    // Se la richiesta ha avuto successo
+    if (res.ok) {
+        // Mostra un messaggio di conferma
+        alert('Prodotto aggiornato con successo!');
+        // Chiama la funzione ottieniProdotti per aggiornare la lista dei prodotti
+        await ottieniProdotti();
+    }
+    }
   // Fine funzione per aggiornare un prodotto
 
 
   // Funzione per eliminare un prodotto
   const deleteProduct = async (id) => {
-    // Effettuo la chimata HTTP passando anche come paramtro l'ID
-    const res = await fetch (url + id, {
-      method: "DELETE", // Utilizzo il metodo DELETE per rimuovere l'elemento 
-      headers: {
-        'Authorization': `Bearer ${apiKey}`
+    // chiedo conferma all'utente se è sicuro di voler elimninare il prodotto
+    let ok = window.confirm("Sei sicuro di voler eliminare il prodotto? Clicca su OK per confermare");
+    // Se l'utente conferma la cancellazione
+    if (ok) {
+      // Effettuo la chimata HTTP passando anche come paramtro l'ID
+      const res = await fetch (url + id, {
+        method: "DELETE", // Utilizzo il metodo DELETE per rimuovere l'elemento 
+        headers: {
+          'Authorization': `Bearer ${apiKey}`
+        }
+      })
+      // Se la risposta va a buon fine esegue queste operazioni
+      if (res.ok) {
+        // Mostra un messaggio di conferma
+        alert('Prodotto eliminato con successo!');
+        // Chiama la funzione ottieniProdotti per aggiornare la lista dei prodotti
+        await ottieniProdotti();
+      } else {
+        console.error("Errore nell'eliminazione del prodotto");
       }
-    })
-    // Se la risposta va a buon fine esegue queste operazioni
-    if (res.ok) {
-      // Mostra un messaggio di conferma
-      alert('Prodotto eliminato con successo!');
-      // Chiama la funzione ottieniProdotti per aggiornare la lista dei prodotti
-      await ottieniProdotti();
+      // Altrimenti se l'utente annulla la cancellazione
     } else {
-      console.error("Errore nell'eliminazione del prodotto");
+      alert('Cancellazione annullata!');
     }
+    
   }
   // Fine funzione per eliminare un prodotto
 

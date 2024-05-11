@@ -46,9 +46,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const price = creaElementoConTesto("span", prod.price);
         // LINK al backoffice
         const link = document.createElement('a');
-        link.className = "text-black d-block text-decoration-none btn btn-outline-primary w-50 mx-auto mt-4";
+        link.className = "text-white d-block text-decoration-none btn btn-primary w-50 mx-auto mt-4";
         link.href = "backoffice.html"
         link.textContent = 'BackOffice';
+        const linkDetail = document.createElement('a');
+        linkDetail.className = "text-white d-block text-decoration-none btn btn-warning w-50 mx-auto mt-4";
+        linkDetail.href = "product-detail.html"
+        linkDetail.textContent = 'Detail';
     
         // Aggiungo gli elementi creati alla card
         card.appendChild(image);
@@ -57,6 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
         card.appendChild(brand);
         card.appendChild(price);
         card.appendChild(link);        
+        card.appendChild(linkDetail);        
         
         // Aggiungo la card al contenitore dei prodotti
         containerCards.appendChild(card);

@@ -1,23 +1,22 @@
-document.addEventListener('DOMContentLoaded', () => {
-    //recupero il parametro dell'URL
-    const urlParam = new URLSearchParams(window.location.search);
-    // estraggo il valore assegnato a bookAsin dalla Query String
-    const bookAsin = urlParam.get('bookAsin');
-    console.log(bookAsin); // verifico di aver preso correttamente il parametro passato
+document.addEventListener("DOMContentLoaded", function() {
+    const params = new URLSearchParams(window.location.search);
+    const _id = params.get('_id');
+    console.log(_id);
 
-    // eseguo la fetch sul singolo elemnto
-    fetch(`https://striveschool-api.herokuapp.com/books/${bookAsin}`)
-        .then((response) => response.json())
-        .then((book) => {
-            const bookDetail = document.getElementById('bookDetail');
-            bookDetail.innerHTML = `
-                <div class="card">
-                    <img src="${book.img}" class="card-img-top" alt="${book.asin}">
-                    <div class="card-body">
-                        <h5 class="card-title">${book.title}</h5>
-                        <p class="card-text">Category: ${book.category}</p>
-                    </div>
-                </div>
-            `;
-        })
-})
+    if (_id) {
+        productDetail(_id);
+    }
+});
+
+async function productDetail(_id) {
+    const apiKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjNiYTQwNWIxYzc3ZjAwMTUwNjgzZWMiLCJpYXQiOjE3MTUxODQ2NDUsImV4cCI6MTcxNjM5NDI0NX0.sXShtyZXMpQO7jCPkI6kklxE5ib3BiXQL-QAMCfIgmU';
+    const url = `https://striveschool-api.herokuapp.com/api/product/${_id}`;
+    const response = await fetch(url, {
+        headers: { Authorization: `Bearer ${apiKey}` }
+    });
+    const product = await response.json();
+
+    if (product) {
+        showDetail(product);
+    }
+}

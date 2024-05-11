@@ -10,10 +10,10 @@
     border-radius: 8px;
     padding: 15px;
     min-width: 600px;
-    height: 750px;
+    height: 800px;
     overflow: hidden;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s cubic-bezier(.215, .61, .355, 1);
+    transition: all 0.4s cubic-bezier(.215, .61, .355, 1);
 }
 
 .product-card-img{
@@ -24,7 +24,7 @@
 }
 
 .product-card:hover {
-    transform: scale(1.08);
+    transform: scale(1.04);
     cursor: pointer;
 }
 
