@@ -54,67 +54,157 @@ document.addEventListener('DOMContentLoaded', function() {
   // Fine funzione per creare l'oggetto
 
 
-  // Funzione per la creazione della struttura della card
-  function showProduct(products) {
-    containerCards.innerHTML = '';
-    containerCards.className = 'mt-5 row row-gap-5';
+  // // Funzione per la creazione della struttura della card
+  // function showProduct(products) {
+  //   containerCards.innerHTML = '';
+  //   containerCards.className = 'mt-5 row row-gap-5';
 
-    products.forEach(prod => {
+  //   products.forEach(prod => {
       
-      // Creo il div della card del prodotto
-      const card = document.createElement("div");
-      card.className = "product-card col me-4"; // Applico CSS
+  //     // Creo il div della card del prodotto
+  //     const card = document.createElement("div");
+  //     card.className = "product-card col me-4"; // Applico CSS
     
-      // Creo gli elementi che popoleranno la card
-      const image = creaElementoConImg("img", prod.imageUrl);
+  //     // Creo gli elementi che popoleranno la card
+  //     const image = creaElementoConImg("img", prod.imageUrl);
+  //     image.className = 'product-card-img';
+  //     const name = creaElementoConTesto("h3", prod.name);
+  //     const description = creaElementoConTesto("p", prod.description);
+  //     const brand = creaElementoConTesto("span", prod.brand);
+  //     brand.className = 'me-3';
+  //     const price = creaElementoConTesto("span", prod.price);
+  //     console.log(prod.id);
+
+  //     // Creo e stilizzo il contenitore dei bottoni
+  //     const buttonContainer = document.createElement('div');
+  //     buttonContainer.className = 'button-container';
+
+  //     // Creo e stilizzo il bottone Update
+  //     const buttonUpdate = document.createElement('button');
+  //     buttonUpdate.textContent = "Modifica";
+  //     buttonUpdate.className = 'btn btn-secondary w-50';
+  //     buttonUpdate.onclick = () => updateProduct(prod.id); // Aggiungo la funzione onclick al bottone
+
+  //     // Creo e stilizzo il bottone Delete
+  //     const buttonDelete = document.createElement('button');
+  //     buttonDelete.textContent = "Delete";
+  //     buttonDelete.className = 'btn btn-danger w-50';
+  //     buttonDelete.onclick = () => deleteProduct(prod.id); // Aggiungo la funzione onclick al bottone
+  
+  //     // Aggiungo gli elementi creati alla card
+  //     card.appendChild(image);
+  //     card.appendChild(name);
+  //     card.appendChild(description);
+  //     card.appendChild(brand);
+  //     card.appendChild(price);
+
+  //     // Appendo i bottoni al loro contenitore 
+  //     buttonContainer.appendChild(buttonUpdate);
+  //     buttonContainer.appendChild(buttonDelete);
+
+
+  //     card.appendChild(buttonContainer);
+
+  //     this.onclick = () => {
+  //       window.location = `product-detail.html?_id=${prod._id}`
+  //   };
+      
+  //     // Aggiungo la card al contenitore dei prodotti
+  //     containerCards.appendChild(card);
+      
+  //   });
+  // }
+  // // Fine funzione per la creazione della struttura della card
+
+  // Funzione per inserire i campi da modificare nel form
+  const getValueForm = async (idInInput) => {
+    // Se viene passato un id all'interno della funzione
+    const id = idInInput;
+    if (id) {
+      console.log(id);
+        // Invia una richiesta GET all'API per recuperare i dati dell'utente richiesto
+        // L'uso di await è necessario per attendere che la richiesta venga completata
+        const res = await fetch(url + id);
+        // Converte la risposta in un oggetto JSON
+        const product = await res.json();
+        // Aggiorna i valori inseriti nel form con i dati dell'utente
+        document.getElementById('name').value = product.name;
+        document.getElementById('description').value = product.description;
+        document.getElementById('image').value = product.imageUrl;
+        document.getElementById('brand').value = product.brand;
+        document.getElementById('price').value = product.price;
+    }
+  }
+
+  // Funzione per mostrare i prodotti
+  function showProduct(products) {
+    // Mi occupo della pulizia del contenitore
+    containerCards.innerHTML = '';
+    products.forEach(prod => {
+
+      // Creazione della card del prodotto
+      const card = document.createElement("div");
+      card.className = "product-card col flex-column me-4"; // Applica CSS
+
+      // Creazione degli elementi per la card
+      // IMMAGINE
+      const image = creaElementoConImg("img", prod.imageUrl); // Creo e richiamo delle funzioni per la creazione degli elementi per non utilizzare innerHTML
       image.className = 'product-card-img';
-      const name = creaElementoConTesto("h3", prod.name);
-      const description = creaElementoConTesto("p", prod.description);
-      const brand = creaElementoConTesto("span", prod.brand);
+
+      // NOME
+      const name = creaElementoConTesto("h3", prod.name); // Creo e richiamo delle funzioni per la creazione degli elementi per non utilizzare innerHTML
+
+      // DESCRIZIONE
+      const description = creaElementoConTesto("p", prod.description); // Creo e richiamo delle funzioni per la creazione degli elementi per non utilizzare innerHTML
+
+      // BRAND
+      const brand = creaElementoConTesto("span", prod.brand); // Creo e richiamo delle funzioni per la creazione degli elementi per non utilizzare innerHTML
       brand.className = 'me-3';
-      const price = creaElementoConTesto("span", prod.price);
-      console.log(prod.id);
+      const price = creaElementoConTesto("span", prod.price); // Creo e richiamo delle funzioni per la creazione degli elementi per non utilizzare innerHTML
 
-      // Creo e stilizzo il contenitore dei bottoni
-      const buttonContainer = document.createElement('div');
-      buttonContainer.className = 'button-container';
+      // Creazione del container dei bottoni
+      const buttonContainer = document.createElement('div')
+      buttonContainer.className = 'd-flex gap-2 mt-3'
 
-      // Creo e stilizzo il bottone Update
+      // Creo e stilizzo il bottone di UPDATE
       const buttonUpdate = document.createElement('button');
       buttonUpdate.textContent = "Modifica";
-      buttonUpdate.className = 'btn btn-secondary w-50';
-      buttonUpdate.onclick = () => updateProduct(prod.id); // Aggiungo la funzione onclick al bottone
+      buttonUpdate.className = 'btn btn-secondary w-50 mx-auto';
+      buttonUpdate.onclick = () => getValueForm(prod._id); // Passa l'ID del prodotto
 
-      // Creo e stilizzo il bottone Delete
+      // Creo e stilizzo il bottone di DELETE
       const buttonDelete = document.createElement('button');
       buttonDelete.textContent = "Delete";
-      buttonDelete.className = 'btn btn-danger w-50';
-      buttonDelete.onclick = () => deleteProduct(prod.id); // Aggiungo la funzione onclick al bottone
-  
-      // Aggiungo gli elementi creati alla card
+      buttonDelete.className = 'btn btn-danger w-50 mx-auto';
+      buttonDelete.onclick = () => deleteProduct(prod._id); // Passa l'ID del prodotto
+
+      // Buton Detail
+      const buttonDetail = document.createElement('button');
+      buttonDetail.textContent = "Detail";
+      buttonDetail.className = 'btn btn-warning w-50 mx-auto';
+      buttonDetail.onclick = () => {
+        window.location = `product-detail.html?_id=${prod._id}`
+      };
+
+      // Aggiunge gli elementi alla card
       card.appendChild(image);
       card.appendChild(name);
       card.appendChild(description);
       card.appendChild(brand);
       card.appendChild(price);
 
-      // Appendo i bottoni al loro contenitore 
+      // Aggiungo al container dei bottoni i bottoni creati
       buttonContainer.appendChild(buttonUpdate);
       buttonContainer.appendChild(buttonDelete);
+      buttonContainer.appendChild(buttonDetail);
+      card.appendChild(buttonContainer); // Appendo il contenitore dei bottoni alla card
 
 
-      card.appendChild(buttonContainer);
-
-      this.onclick = () => {
-        window.location = `product-detail.html?_id=${prod._id}`
-    };
-      
-      // Aggiungo la card al contenitore dei prodotti
+      // Appendo la card al contenitore dei prodotti
       containerCards.appendChild(card);
-      
     });
   }
-  // Fine funzione per la creazione della struttura della card
+  // Fine funzione per mostrare i prodotti
 
 
   // Creazione delle funzioni che andranno a modificare il contenuto della card
@@ -144,7 +234,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const imageUrl = document.getElementById('image').value;
     const price = document.getElementById('price').value;
     // Crea un nuovo oggetto prodotto con i nuovi dati
-    const updatedProduct = {name, description, brand, imageUrl, price};
+    const updatedProduct = {
+      name, description, brand, imageUrl, price};
 
     // Effettuo la chimata HTTP passando anche come paramtro l'ID
     const res = await fetch(url + id, {
@@ -163,7 +254,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Chiama la funzione ottieniProdotti per aggiornare la lista dei prodotti
         await ottieniProdotti();
     }
-    }
+  }
   // Fine funzione per aggiornare un prodotto
 
 
@@ -192,6 +283,7 @@ document.addEventListener('DOMContentLoaded', function() {
       // Altrimenti se l'utente annulla la cancellazione
     } else {
       alert('Cancellazione annullata!');
+      await ottieniProdotti();
     }
     
   }

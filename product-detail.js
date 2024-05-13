@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //recupero il parametro dell'URL
     const urlParam = new URLSearchParams(window.location.search);
     // estraggo il valore assegnato a bookAsin dalla Query String
-    const productId = urlParam.get('productId');
+    const productId = urlParam.get('_id');
     console.log(productId); // verifico di aver preso correttamente il parametro passato
 
     // Puntatore apiKey
