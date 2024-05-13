@@ -71,8 +71,8 @@
                   <input type="number" id="price" class="mt-1 mb-3 p-2 rounded form-control" placeholder="$" required />                 
                 </div>
                 <div class="d-flex flex-column">
-                  <label for="productId" class="text-start">Price</label>
-                  <input type="text" id="productId" class="mt-1 mb-3 p-2 rounded form-control"/>                 
+                  <label for="productId" class="text-start d-none">Price</label>
+                  <input type="hidden" id="productId" class="mt-1 mb-3 p-2 rounded form-control"/>                 
                 </div>
               </div>
               <div class="d-flex mt-2">
@@ -89,7 +89,7 @@
 
         <!-- Contenitore dei prodotti -->
         <div class="mt-5">
-          <div id="containerCards" class="row row-gap-5 mb-5"></div>
+          <div id="containerCards" class="row gap-4 row-gap-5 mb-5"></div>
         </div>
         <!-- Fine contenitore dei prodotti -->
       </div>
