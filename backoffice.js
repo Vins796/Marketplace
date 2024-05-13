@@ -4,7 +4,7 @@ const url = 'https://striveschool-api.herokuapp.com/api/product/';
 const apiKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjNiYTQwNWIxYzc3ZjAwMTUwNjgzZWMiLCJpYXQiOjE3MTUxODQ2NDUsImV4cCI6MTcxNjM5NDI0NX0.sXShtyZXMpQO7jCPkI6kklxE5ib3BiXQL-QAMCfIgmU';
 
 
-document.addEventListener('DOMContentLoaded', function() {
+
 
   const form = document.getElementById("product-form"); // Puntatore del form
   const containerCards = document.getElementById('containerCards'); // Puntatore del container dove stamperò i prodotti
@@ -124,7 +124,12 @@ document.addEventListener('DOMContentLoaded', function() {
       console.log(id);
         // Invia una richiesta GET all'API per recuperare i dati dell'utente richiesto
         // L'uso di await è necessario per attendere che la richiesta venga completata
-        const res = await fetch(url + id);
+        const res = await fetch(url + id, {
+          headers: {
+            'Authorization': `Bearer ${apiKey}` // Inserisco il token per l'autorizzazione
+          } // inserisco il token per l'autorizzazione
+        });
+
         // Converte la risposta in un oggetto JSON
         const product = await res.json();
         // Aggiorna i valori inseriti nel form con i dati dell'utente
@@ -133,6 +138,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('image').value = product.imageUrl;
         document.getElementById('brand').value = product.brand;
         document.getElementById('price').value = product.price;
+        document.getElementById('productId').value = id;
     }
   }
 
@@ -225,24 +231,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Funzione per aggiornare un prodotto
   // Passo come parametro l'ID per utilizzarlo in seguito
-  const updateProduct = async (id) => {
-    
+  const updateProduct = async (event) => {
+    event.preventDefault();
     // Recupera i valori inseriti dall'utente nel form
     const name = document.getElementById('name').value;
     const description = document.getElementById('description').value;
     const brand = document.getElementById('brand').value;
     const imageUrl = document.getElementById('image').value;
     const price = document.getElementById('price').value;
+    const id = document.getElementById('productId').value;
     // Crea un nuovo oggetto prodotto con i nuovi dati
     const updatedProduct = {
-      name, description, brand, imageUrl, price};
+      name: name, 
+      description: description, 
+      brand: brand, 
+      imageUrl: imageUrl, 
+      price: price
+    };
 
     // Effettuo la chimata HTTP passando anche come paramtro l'ID
     const res = await fetch(url + id, {
         method: "PUT", // Utilizzo il metodo PUT per modificare l'elemento 
         headers: { 
-          "content-type": "application/json",
-          'Authorization': `Bearer ${apiKey}`
+          'Authorization': `Bearer ${apiKey}`,
+          'content-type': "application/json",
         },
         body: JSON.stringify(updatedProduct),
     });
@@ -253,6 +265,7 @@ document.addEventListener('DOMContentLoaded', function() {
         alert('Prodotto aggiornato con successo!');
         // Chiama la funzione ottieniProdotti per aggiornare la lista dei prodotti
         await ottieniProdotti();
+        form.reset();
     }
   }
   // Fine funzione per aggiornare un prodotto
@@ -290,7 +303,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Fine funzione per eliminare un prodotto
 
   // Creo la funzione al submit del form
-  form.addEventListener('submit', async function(event) {
+  document.getElementById('createProduct').addEventListener('click', async (event) => {
     event.preventDefault(); // Previene il comportamento di default del form
 
     // Estraggo i dati ottenuti dagli input
@@ -303,8 +316,8 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('Elemento creato:', createdProduct);
 
     
-    ottieniProdotti(); // Aggiorno la lista degli elementi
     form.reset(); // Effettuo il reset dei campi di input
+    ottieniProdotti(); // Aggiorno la lista degli elementi
   });
 
   ottieniProdotti(); // Lancio la funzione per farmi ottenere i risultati all'avvio
@@ -312,7 +325,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-})
 
 
 
